@@ -1,0 +1,90 @@
+"use client";
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { useOAuthComplete } from "@/hooks/useOAuthComplete";
+
+export default function OAuthCompletePage() {
+  const {
+    email,
+    username, setUsername,
+    dob, setDob,
+    acceptedTerms, setAcceptedTerms,
+    setTurnstileToken,
+    isLoading,
+    error, setError,
+    turnstileRef,
+    handleComplete
+  } = useOAuthComplete();
+
+  if (!email) {
+    return <div className="flex-1 flex justify-center mt-20"><Loader2 className="animate-spin text-joint-green" size={32} /></div>;
+  }
+
+  return (
+    <div className="flex-1 flex flex-col items-center justify-center p-6 w-full max-w-md mx-auto my-8">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Complete Your Profile</h1>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">Signing in as <span className="font-bold text-gray-700 dark:text-gray-300">{email}</span></p>
+
+      <form onSubmit={handleComplete} className="w-full flex flex-col gap-4">
+        
+        <div className="flex flex-col">
+          <label className="text-sm text-gray-600 dark:text-gray-400 font-semibold mb-1">Choose a Username</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => { setUsername(e.target.value); setError(null); }}
+            className="px-4 py-3 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#2a2a2a] text-gray-900 dark:text-white focus:outline-none focus:border-joint-green transition-colors"
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label className="text-sm text-gray-600 dark:text-gray-400 font-semibold mb-1">Date of Birth</label>
+          <input
+            type="date"
+            value={dob}
+            onChange={(e) => { setDob(e.target.value); setError(null); }}
+            className="px-4 py-3 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#2a2a2a] text-gray-900 dark:text-white focus:outline-none focus:border-joint-green transition-colors"
+          />
+        </div>
+
+        <div className="flex items-center gap-2 mt-2">
+          <input
+            type="checkbox"
+            id="terms"
+            checked={acceptedTerms}
+            onChange={(e) => { setAcceptedTerms(e.target.checked); setError(null); }}
+            className="w-4 h-4 text-joint-green border-gray-300 rounded accent-[#55C72E] focus:ring-joint-green"
+          />
+          <label htmlFor="terms" className="text-sm text-gray-600 dark:text-gray-400">
+            I agree to the <Link href="/privacy" target="_blank" className="text-joint-green hover:underline font-semibold">Privacy Policy</Link>
+          </label>
+        </div>
+
+        <div className="flex justify-center my-2">
+          {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ? (
+            <Turnstile
+              ref={turnstileRef}
+              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+              onSuccess={(token) => setTurnstileToken(token)}
+              onExpire={() => setTurnstileToken("")}
+              options={{ theme: "auto" }}
+            />
+          ) : (
+             <div className="text-sm text-red-500">Turnstile Site Key missing</div>
+          )}
+        </div>
+
+        {error && <div className="text-joint-red text-sm font-semibold text-center">{error}</div>}
+
+        {isLoading ? (
+          <div className="flex justify-center my-4"><Loader2 className="animate-spin text-joint-green" size={32} /></div>
+        ) : (
+          <button type="submit" className="w-full bg-joint-green hover:bg-opacity-90 text-white font-bold py-3 rounded mt-2 transition-colors">
+            Finish Registration
+          </button>
+        )}
+      </form>
+    </div>
+  );
+}

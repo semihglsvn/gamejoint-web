@@ -9,7 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "^1.5.5",
+    "@react-oauth/google": "^0.13.5",
+    "lucide-react": "^1.30.0",
     "next": "16.3.0",
+    "next-themes": "^0.4.6",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
@@ -22,5 +26,10 @@
     "eslint-config-next": "16.3.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "allowScripts": {
+    "next-themes@0.4.6": true,
+    "@react-oauth/google@0.13.5": true,
+    "@marsidev/react-turnstile@1.5.5": true
   }
 }

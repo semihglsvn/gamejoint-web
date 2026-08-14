@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* 1. Force Tailwind to recognize the .dark class for manual toggling */
+@custom-variant dark (&:is(.dark *));
+
+/* 2. Inject your Android Kotlin Hex Codes */
+@theme {
+  --color-joint-green: #55C72E;
+  --color-joint-yellow: #D4A017;
+  --color-joint-red: #D32F2F;
+  --color-joint-gray: #555555;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* 3. Base HTML resets */
+@layer base {
+  body {
+    @apply bg-[#f2f2f2] text-gray-900;
+  }
+  
+  .dark body {
+    @apply bg-[#181818] text-gray-100;
+  }
+  
+  /* Kill the default blue browser links */
+  a {
+    @apply text-inherit no-underline; 
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 4. Hide scrollbar for the mobile sliders */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-number-arrows::-webkit-outer-spin-button,
+.hide-number-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.hide-number-arrows {
+  -moz-appearance: textfield;
 }
