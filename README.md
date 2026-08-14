@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GameJoint - Frontend Client
 
-## Getting Started
+GameJoint is a comprehensive video game database and community review platform. This repository contains the Next.js frontend client, which interfaces with the dedicated Spring Boot backend to deliver dynamic game data, user authentication, and critical reception aggregation.
 
-First, run the development server:
+## Live Application
+**Production URL:** [https://game-joint.net](https://game-joint.net)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## System Architecture
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This application is decoupled into a standalone client-server architecture. 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **Frontend (Current Repository):** Next.js App Router, React, Tailwind CSS.
+* **Backend API Repository:** [semihglsvn/gamejoint-api](https://github.com/semihglsvn/gamejoint-api)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The frontend is responsible for rendering the UI, managing client-side state via custom hooks, and handling SEO optimization through Server Components and canonical routing. All business logic, database transactions, and data persistence are managed exclusively by the backend API.
 
-## Learn More
+## Core Technologies
 
-To learn more about Next.js, take a look at the following resources:
+* **Framework:** Next.js (App Router)
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS
+* **Authentication:** HttpOnly JWT Cookies, Google OAuth 2.0
+* **External Data Provider:** RAWG Video Games Database API
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Key Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* **Server-Side Rendering (SSR) & SEO:** Dynamic metadata generation and canonical URL routing for game detail pages to ensure optimal search engine indexing.
+* **Separation of Concerns:** Strict decoupling of UI components and business logic using custom React hooks.
+* **Secure Authentication:** Implementation of HttpOnly cookies for session management, mitigating XSS vulnerabilities.
+* **Review Aggregation (JointScore):** Algorithmic distinction and aggregation of standard user reviews versus verified critic scores.
+* **Advanced Search & Filtering:** Debounced asynchronous search with multi-parameter filtering (genre, platform, score) and pagination.
+* **Dynamic Theming:** System-integrated dark/light mode execution utilizing a custom context provider to eliminate unstyled content flashes (FOUC).
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Repository Note
+This repository contains the production build configuration. Local development and environment initialization steps are omitted as this represents the deployed client architecture.
