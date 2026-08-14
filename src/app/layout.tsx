@@ -29,7 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `
         }} />
       </head>
-      <body className={`${inter.className} flex flex-col min-h-screen transition-colors duration-200`}>
+      {/* FIXED: Removed transition-colors animation and added base background colors */}
+      <body className={`${inter.className} flex flex-col min-h-screen bg-gray-50 dark:bg-[#121212]`}>
         <Providers>
           <Navbar />
           <main className="flex-1 w-full max-w-[1100px] mx-auto px-[15px] pt-[20px] pb-[40px]">

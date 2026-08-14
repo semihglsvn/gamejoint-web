@@ -28,6 +28,7 @@ export interface ReviewResponse {
   score: number;
   comment?: string;
   createdAt: string;
+  gameTitle?: string;
 }
 
 export async function getGames(endpoint: string): Promise<Game[]> {
@@ -257,4 +258,30 @@ export async function cancelDeletion() {
   });
   if (!res.ok) throw new Error("Failed to cancel deletion");
   return res.json();
+}
+
+export interface PublicProfileResponse {
+  id: number;
+  username: string;
+  roleId: number;
+  roleName: string;
+  createdAt: string;
+  isBanned: boolean;
+}
+
+export async function getPublicProfile(username: string): Promise<PublicProfileResponse> {
+  const res = await fetch(`${API_BASE_URL}/users/${username}/public`, {
+    next: { revalidate: 60 } 
+  });
+  if (!res.ok) throw new Error("User not found");
+  return res.json();
+}
+
+export async function getUserReviews(username: string): Promise<ReviewResponse[]> {
+  const res = await fetch(`${API_BASE_URL}/reviews/user/${username}`, {
+    next: { revalidate: 60 }
+  });
+  if (!res.ok) throw new Error("Failed to fetch reviews");
+  const json = await res.json();
+  return json.content || json || [];
 }
