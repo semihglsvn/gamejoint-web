@@ -3,13 +3,18 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Providers } from "@/components/Providers"; 
+import { constructMetadata } from "@/lib/seo"; // Import the utility
 
 const inter = Inter({ subsets: ["latin"] });
 
+// Wrap your default site info in the utility to generate all OG/Twitter tags automatically
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
-  title: "GameJoint",
-  description: "A community for gamers and critics.",
+  ...constructMetadata({
+    title: "GameJoint",
+    description: "A community for gamers and critics.",
+    // We omit the image here so it defaults to your opengraph-image.png!
+  }),
   icons: {
     icon: "/logo.svg",
   },
@@ -31,7 +36,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `
         }} />
       </head>
-      {/* FIXED: Removed transition-colors animation and added base background colors */}
       <body className={`${inter.className} flex flex-col min-h-screen bg-gray-50 dark:bg-[#121212]`}>
         <Providers>
           <Navbar />

@@ -2,13 +2,13 @@ import { getGameDetails, formatImageUrl } from "@/lib/api";
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import GameDetailClient from "./GameDetailClient";
+import { constructMetadata } from "@/lib/seo"; // Import the utility
 
-// Helper function to create clean, SEO-friendly slugs
 function generateSlug(id: number, title: string) {
   const sanitizedTitle = title
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric characters with hyphens
-    .replace(/(^-|-$)+/g, "");   // Remove leading or trailing hyphens
+    .replace(/[^a-z0-9]+/g, "-") 
+    .replace(/(^-|-$)+/g, "");   
   return `${id}-${sanitizedTitle}`;
 }
 
@@ -25,15 +25,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const game = await getGameDetails(id);
   if (!game) return { title: "Game Not Found" };
 
-  return {
+  const expectedSlug = generateSlug(id, game.title);
+
+  // Return the globally structured metadata
+  return constructMetadata({
     title: `${game.title} Reviews & JointScore | GameJoint`,
     description: game.description?.substring(0, 160) || `Check out reviews, scores, and details for ${game.title} on GameJoint.`,
-    openGraph: {
-      title: `${game.title} | GameJoint`,
-      description: game.description?.substring(0, 160),
-      images: [formatImageUrl(game.coverImage || game.customBanner)],
-    },
-  };
+    image: formatImageUrl(game.coverImage || game.customBanner),
+    url: `/games/${expectedSlug}`,
+  });
 }
 
 export default async function GamePage({ params }: Props) {
