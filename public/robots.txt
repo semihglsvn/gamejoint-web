@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /register
+Disallow: /settings
+
+Sitemap: https://game-joint.net/sitemap.xml

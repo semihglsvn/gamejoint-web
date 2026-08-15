@@ -10,13 +10,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: "GameJoint",
   description: "A community for gamers and critics.",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning> 
       <head>
-        {/* THIS SCRIPT KILLS THE WHITE FLASH */}
         <script dangerouslySetInnerHTML={{
           __html: `
             try {

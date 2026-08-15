@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "./config";
-
+export { API_BASE_URL };
 export interface Game {
   id?: number;
   gameId?: number; // Featured games use this
