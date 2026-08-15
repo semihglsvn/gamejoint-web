@@ -11,9 +11,20 @@ function slugify(text: string) {
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-')        // Replace spaces with hyphens
-    .replace(/[^\w\-]+/g, '')    // Remove all non-word characters
-    .replace(/\-\-+/g, '-');     // Replace multiple hyphens with a single hyphen
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
+}
+
+// NEW: Bulletproof date parser to catch bad database strings
+function safeDate(dateString: string | null | undefined): Date {
+  if (!dateString) return new Date(); 
+  
+  const parsed = new Date(dateString);
+  // If JS fails to parse the string, getTime() returns NaN
+  if (isNaN(parsed.getTime())) return new Date(); 
+  
+  return parsed;
 }
 
 export async function generateSitemaps() {
@@ -35,13 +46,11 @@ export default async function sitemap({ id }: { id: Promise<number> | number }):
     return [];
   }
 
-  // Ensure the TypeScript interface expects the new title property
   const games: { id: number; updatedAt: string; title: string }[] = await res.json();
 
   const gameRoutes = games.map((game) => ({
-    // Output: https://game-joint.net/games/9-line-of-defense-tactics
     url: `${SITE_URL}/games/${game.id}-${slugify(game.title)}`,
-    lastModified: new Date(game.updatedAt || new Date()),
+    lastModified: safeDate(game.updatedAt), // FIXED: Wrapping the date in the safety checker
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
