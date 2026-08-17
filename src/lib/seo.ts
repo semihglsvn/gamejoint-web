@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 
 const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://game-joint.net";
-// Use your standard logo or the opengraph-image.png we made earlier as a fallback
 const DEFAULT_IMAGE = `${SITE_URL}/opengraph-image.png`; 
 
 type SeoProps = {
@@ -17,13 +16,21 @@ export function constructMetadata({
   image,
   url,
 }: SeoProps): Metadata {
+  
+  // Calculate the full URL once
+  const fullUrl = url ? `${SITE_URL}${url}` : SITE_URL;
+
   return {
     title,
     description,
+    // NEW: Explicitly tells Google the master URL for this specific page
+    alternates: {
+      canonical: fullUrl,
+    },
     openGraph: {
       title,
       description,
-      url: url ? `${SITE_URL}${url}` : SITE_URL,
+      url: fullUrl,
       siteName: "GameJoint",
       images: [
         {

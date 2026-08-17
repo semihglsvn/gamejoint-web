@@ -7,13 +7,11 @@ import { constructMetadata } from "@/lib/seo"; // Import the utility
 
 const inter = Inter({ subsets: ["latin"] });
 
-// Wrap your default site info in the utility to generate all OG/Twitter tags automatically
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   ...constructMetadata({
     title: "GameJoint",
     description: "A community for gamers and critics.",
-    // We omit the image here so it defaults to your opengraph-image.png!
   }),
   icons: {
     icon: "/logo.svg",
